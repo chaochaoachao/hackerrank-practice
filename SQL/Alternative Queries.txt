@@ -1,0 +1,58 @@
+1. Draw The Triangle 1
+
+P(R) represents a pattern drawn by Julia in R rows. The following pattern represents P(5):
+
+* * * * * 
+* * * * 
+* * * 
+* * 
+*
+Write a query to print the pattern P(20).
+
+SELECT REPEAT('* ', @NUMBER := @NUMBER - 1) 
+FROM information_schema.tables, (SELECT @NUMBER:=21) t 
+LIMIT 20
+
+
+2. Draw The Triangle 2
+
+P(R) represents a pattern drawn by Julia in R rows. The following pattern represents P(5):
+
+* 
+* * 
+* * * 
+* * * * 
+* * * * *
+Write a query to print the pattern P(20).
+
+set @row := 0;
+select repeat('* ', @row := @row + 1) 
+from information_schema.tables 
+where @row < 20
+
+
+3. 
+Write a query to print all prime numbers less than or equal to 1000. Print your result on a single line, and use the ampersand () character as your separator (instead of a space).
+
+For example, the output for all prime numbers <=10 would be:
+
+2&3&5&7
+
+
+SELECT GROUP_CONCAT(NUMB SEPARATOR '&')
+FROM (
+    SELECT @num:=@num+1 as NUMB FROM
+    information_schema.tables t1,
+    information_schema.tables t2,
+    (SELECT @num:=1) tmp
+) tempNum
+WHERE NUMB<=1000 AND NOT EXISTS(
+		SELECT * FROM (
+			SELECT @nu:=@nu+1 as NUMA FROM
+			    information_schema.tables t1,
+			    information_schema.tables t2,
+			    (SELECT @nu:=1) tmp1
+			    LIMIT 1000
+			) tatata
+		WHERE FLOOR(NUMB/NUMA)=(NUMB/NUMA) AND NUMA<NUMB AND NUMA>1
+	)
